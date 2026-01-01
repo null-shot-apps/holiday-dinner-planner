@@ -1,84 +1,149 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-const slogans = [
-  "Turn chats into apps",
-  "Prompt. Ship. Repeat.",
-  "Build anything from a chat",
-  "Ideas → Apps, instantly",
-  "From zero to MVP in minutes",
-  "Your cofounder in the command line",
-  "Draft, iterate, deploy",
-  "Ship faster than you can type",
-  "Design in text, deliver in code",
-  "Dream it. Prompt it. Run it.",
-  "Chat-native app building",
-  "From prompt to product",
-  "One prompt, infinite apps",
-  "Stop scaffolding. Start shipping.",
-  "Prototype at the speed of thought",
-  "Make conversations executable"
-];
+type Option = {
+  id: string;
+  name: string;
+  category: 'main' | 'style' | 'constraint';
+  selected: boolean;
+};
 
-export default function Landing() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+export default function DinnerPlanner() {
+  const [options, setOptions] = useState<Option[]>([
+    { id: '1', name: 'Biryani', category: 'main', selected: false },
+    { id: '2', name: 'Pizza', category: 'main', selected: false },
+    { id: '3', name: 'Pasta', category: 'main', selected: false },
+    { id: '4', name: 'Christmas Special Dish', category: 'main', selected: false },
+    { id: '5', name: 'Home Food Only', category: 'style', selected: false },
+    { id: '6', name: 'No Cooking', category: 'style', selected: false },
+    { id: '7', name: 'Order Online', category: 'style', selected: false },
+    { id: '8', name: 'Budget Conscious', category: 'constraint', selected: false },
+  ]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsVisible(false);
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % slogans.length);
-        setIsVisible(true);
-      }, 400);
-    }, 2800);
+  const toggleOption = (id: string) => {
+    setOptions(options.map(opt => 
+      opt.id === id ? { ...opt, selected: !opt.selected } : opt
+    ));
+  };
 
-    return () => clearInterval(interval);
-  }, []);
+  const mainDishes = options.filter(o => o.category === 'main');
+  const styles = options.filter(o => o.category === 'style');
+  const constraints = options.filter(o => o.category === 'constraint');
+
+  const selectedMains = mainDishes.filter(o => o.selected);
+  const selectedStyles = styles.filter(o => o.selected);
+  const selectedConstraints = constraints.filter(o => o.selected);
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden bg-black text-white">
-      {/* Enhanced animated aurora background layers */}
-      <div className="absolute inset-0 bg-aurora-layer-1" />
-      <div className="absolute inset-0 bg-aurora-layer-2" />
-      <div className="absolute inset-0 bg-aurora-layer-3" />
-      
-      {/* Floating particles overlay */}
-      <div className="absolute inset-0 bg-particles" />
-      
-      {/* Main content - centered */}
-      <main className="relative z-10 h-full flex flex-col items-center justify-center px-6">
-        <h1 className="text-center text-[clamp(28px,6vw,64px)] font-medium tracking-tight mb-4">
-          Turn Chats into Apps
-        </h1>
-        
-        {/* Rotating slogans */}
-        <div className="mt-4 h-8 md:h-10 overflow-hidden flex items-center justify-center">
-          <span
-            className={`inline-block text-center text-[clamp(18px,3vw,32px)] font-light transition-all duration-[400ms] ease-in-out ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-            }`}
-          >
-            {slogans[currentIndex]}
-          </span>
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-green-50 to-red-50 p-6">
+      <div className="max-w-4xl mx-auto">
+        <header className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-red-700 mb-2">🎄 Christmas Dinner Planner</h1>
+          <p className="text-gray-600">Organize your family's dinner ideas</p>
+        </header>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {/* Main Dishes */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-red-600 mb-4">Main Dishes</h2>
+            <div className="space-y-2">
+              {mainDishes.map(option => (
+                <button
+                  key={option.id}
+                  onClick={() => toggleOption(option.id)}
+                  className={`w-full text-left p-3 rounded-lg transition-all ${
+                    option.selected 
+                      ? 'bg-red-100 border-2 border-red-500 text-red-900' 
+                      : 'bg-gray-50 border-2 border-gray-200 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {option.selected ? '✓ ' : ''}{option.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Cooking Style */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-green-600 mb-4">Cooking Style</h2>
+            <div className="space-y-2">
+              {styles.map(option => (
+                <button
+                  key={option.id}
+                  onClick={() => toggleOption(option.id)}
+                  className={`w-full text-left p-3 rounded-lg transition-all ${
+                    option.selected 
+                      ? 'bg-green-100 border-2 border-green-500 text-green-900' 
+                      : 'bg-gray-50 border-2 border-gray-200 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {option.selected ? '✓ ' : ''}{option.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Constraints */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-amber-600 mb-4">Constraints</h2>
+            <div className="space-y-2">
+              {constraints.map(option => (
+                <button
+                  key={option.id}
+                  onClick={() => toggleOption(option.id)}
+                  className={`w-full text-left p-3 rounded-lg transition-all ${
+                    option.selected 
+                      ? 'bg-amber-100 border-2 border-amber-500 text-amber-900' 
+                      : 'bg-gray-50 border-2 border-gray-200 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {option.selected ? '✓ ' : ''}{option.name}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-      </main>
-      
-      {/* Start Prompting arrow pointing left - bottom left */}
-      <div className="absolute left-6 md:left-8 bottom-[5%] z-20 flex items-center gap-3 arrow-point-left">
-        <div className="flex items-center gap-2 text-white/80 font-medium text-sm md:text-base">
-          <svg 
-            className="w-5 h-5 md:w-6 md:h-6 animate-bounce-horizontal" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          <span>Start prompting</span>
+
+        {/* Summary */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Your Dinner Plan</h2>
+          
+          {selectedMains.length === 0 && selectedStyles.length === 0 && selectedConstraints.length === 0 ? (
+            <p className="text-gray-500 italic">Select options above to build your plan</p>
+          ) : (
+            <div className="space-y-4">
+              {selectedMains.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-red-700 mb-2">Menu:</h3>
+                  <ul className="list-disc list-inside text-gray-700">
+                    {selectedMains.map(opt => <li key={opt.id}>{opt.name}</li>)}
+                  </ul>
+                </div>
+              )}
+              
+              {selectedStyles.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-green-700 mb-2">How:</h3>
+                  <ul className="list-disc list-inside text-gray-700">
+                    {selectedStyles.map(opt => <li key={opt.id}>{opt.name}</li>)}
+                  </ul>
+                </div>
+              )}
+              
+              {selectedConstraints.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-amber-700 mb-2">Keep in Mind:</h3>
+                  <ul className="list-disc list-inside text-gray-700">
+                    {selectedConstraints.map(opt => <li key={opt.id}>{opt.name}</li>)}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
+
