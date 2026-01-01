@@ -40,7 +40,7 @@ export default function DinnerPlanner() {
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-red-700 mb-2">🎄 Christmas Dinner Planner</h1>
-          <p className="text-gray-600">Organize your family's dinner ideas</p>
+          <p className="text-gray-600">Organize your family&apos;s dinner ideas</p>
         </header>
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
